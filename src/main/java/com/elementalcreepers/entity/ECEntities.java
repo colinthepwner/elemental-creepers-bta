@@ -55,9 +55,15 @@ public final class ECEntities {
 	public static void registerSpawns() {
 		List<String> netherKeys = new ArrayList<>();
 		int allBiomes = 0;
+		int peacefulBiomes = 0;
 
 		for (Biome biome : Registries.BIOMES.values()) {
 			List<SpawnListEntry> monsters = biome.getSpawnableList(MobCategory.MONSTER);
+
+			if (monsters.isEmpty()) {
+				++peacefulBiomes;
+				continue;
+			}
 			++allBiomes;
 
 			if (isNether(biome)) {
@@ -82,6 +88,11 @@ public final class ECEntities {
 			allBiomes, netherKeys.size());
 
 		ElementalCreepers.LOGGER.info("Magma creeper nether biomes: {}", String.join(", ", netherKeys));
+		if (peacefulBiomes > 0) {
+			ElementalCreepers.LOGGER.info(
+				"Left {} biome(s) alone: their monster list was already empty, which is another mod's "
+					+ "way of saying nothing hostile spawns there.", peacefulBiomes);
+		}
 	}
 
 	private static boolean isNether(Biome biome) {

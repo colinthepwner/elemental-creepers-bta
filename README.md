@@ -50,6 +50,23 @@ anything else `/summon firecreeper` is rejected as an invalid entity. The nine i
 `cookiecreeper` `magmacreeper` `ghostcreeper`, and they are also printed at startup under
 `Elemental Creepers summon ids:`.
 
+## Playing with other mods
+
+Designed to sit quietly next to anything else. It **registers no blocks, no items, no biomes, no
+dimensions and no world types**, so the id space where conflicts actually happen is untouched. It
+uses **no mixins**, so there is nothing to conflict with there either.
+
+What it does register is nine entities under its own `elementalcreepers:` namespace. BTA keys
+entities by namespaced string id and sends the server's numeric mapping to each client on join, so
+mod load order cannot desynchronise them between a client and a server.
+
+Spawn entries are added by sweeping the biome registry after every mod has registered, so other
+mods' biomes are picked up automatically — including their Nether biomes, which the magma creeper
+needs. Existing entries are never removed or reordered, and a biome whose monster list is already
+empty is left completely alone, on the grounds that another mod meant it that way.
+
+Tested alongside Biomes O' Plenty and Twilight Forest.
+
 ## Configuration
 
 `config/Elemental Creepers.toml`, written on first launch. Spawn weights and effect sizes, one entry
