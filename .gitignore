@@ -1,0 +1,41 @@
+.gradle/
+.idea/
+.vscode/
+bin/
+build/
+out/
+run/
+run-server/
+
+# Reference material: the decompiled original mod, a decompiled b1.7.3 client and a decompiled BTA
+# client. None of it is ours to redistribute -- the port is written *against* these, never *from* a
+# committed copy of them. Same rule the Twilight Forest and BOP ports keep _reference/ under.
+_reference/
+decompiled/
+extracted/
+
+# The original mod itself. The sidecar reads a copy the player supplies; a copy must never be
+# committed here, and this line is what keeps a convenience copy in the working tree out of git.
+ElementalCreepers_v*.zip
+
+# Porting notes: the obfuscation mapping, the upstream-behaviour catalogue and the sidecar's design
+# rationale. Kept local. These are implementation notes and a record of what upstream gets wrong,
+# which is exactly what a public README is not for -- the same rule the BOP port keeps its own docs
+# under.
+docs/
+
+# Editor, IDE and tooling artefacts -- never ship these
+*.orig
+
+# Asset sidecar -- output is generated from a copy of the original mod that the player supplies,
+# and neither the copy nor anything extracted from it is redistributable.
+texturepacks/
+**/ElementalCreepersAssets/
+
+# BTA's log4j config writes here when a JVM is started with the client jar on its classpath and the
+# repo root as its working directory. Harmless, but it is not run/logs/ and not the log to read.
+logs/
+
+# Python bytecode from tools/
+__pycache__/
+*.pyc

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "elementalcreepers",
+  "version": "${version}",
+
+  "name": "Elemental Creepers",
+  "description": "Elemental Creepers 1.4, ported to Better than Adventure. Not affiliated with the original author. Ships none of the original mod's art -- supply your own copy and it will be read in; see the README.",
+  "authors": [
+    "Elemental Creepers 1.4 (original mod, author uncredited in the archive)"
+  ],
+
+  "icon": "icon.png",
+
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "environment": "*",
+
+  "entrypoints": {
+    "main": ["com.elementalcreepers.ElementalCreepers"],
+    "client": ["com.elementalcreepers.ElementalCreepersClient"]
+  },
+
+  "depends": {
+    "fabricloader": ">=${fabricloader}",
+    "halplibe": ">=${halplibe}",
+    "minecraft": "*",
+    "java": ">=${java}"
+  },
+  "suggests": {
+    "modmenu": ">=${modmenu}"
+  }
+}
