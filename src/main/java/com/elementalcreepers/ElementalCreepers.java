@@ -16,13 +16,23 @@ public class ElementalCreepers implements ModInitializer {
 	public void onInitialize() {
 		ECConfig.init();
 		CommonEvents.BEFORE_GAME_START.listen(Key.of(MOD_ID), this::beforeGameStart);
-		CommonEvents.AFTER_GAME_START.listen(Key.of(MOD_ID), this::afterGameStart);
+		CommonEvents.AFTER_GAME_START.listen(Key.of(MOD_ID), this::afterGameStartGuarded);
 		LOGGER.info("Elemental Creepers initialized.");
 	}
 
 	private void beforeGameStart() {
 
 		ECEntities.initEntities();
+	}
+
+	private void afterGameStartGuarded() {
+		try {
+			afterGameStart();
+		} catch (Throwable t) {
+			LOGGER.error("afterGameStart failed; parts of this mod may be missing. Deliberately "
+				+ "swallowed: throwing here would cancel afterGameStart for every mod loaded after "
+				+ "this one.", t);
+		}
 	}
 
 	private void afterGameStart() {

@@ -56,6 +56,7 @@ public final class ECEntities {
 		List<String> netherKeys = new ArrayList<>();
 		int allBiomes = 0;
 		int peacefulBiomes = 0;
+		int lockedBiomes = 0;
 
 		for (Biome biome : Registries.BIOMES.values()) {
 			List<SpawnListEntry> monsters = biome.getSpawnableList(MobCategory.MONSTER);
@@ -66,21 +67,26 @@ public final class ECEntities {
 			}
 			++allBiomes;
 
-			if (isNether(biome)) {
+			try {
+				if (isNether(biome)) {
 
-				monsters.add(new SpawnListEntry(MobMagmaCreeper.class, ECConfig.MAGMA_CREEPER_SPAWN));
-				netherKeys.add(String.valueOf(biome.getRegistryKey()));
+					monsters.add(new SpawnListEntry(MobMagmaCreeper.class, ECConfig.MAGMA_CREEPER_SPAWN));
+					netherKeys.add(String.valueOf(biome.getRegistryKey()));
+				}
+
+				monsters.add(new SpawnListEntry(MobWaterCreeper.class, ECConfig.WATER_CREEPER_SPAWN));
+				monsters.add(new SpawnListEntry(MobFireCreeper.class, ECConfig.FIRE_CREEPER_SPAWN));
+				monsters.add(new SpawnListEntry(MobIceCreeper.class, ECConfig.ICE_CREEPER_SPAWN));
+				monsters.add(new SpawnListEntry(MobElectricCreeper.class, ECConfig.ELECTRIC_CREEPER_SPAWN));
+				monsters.add(new SpawnListEntry(MobEarthCreeper.class, ECConfig.EARTH_CREEPER_SPAWN));
+				monsters.add(new SpawnListEntry(MobPsychicCreeper.class, ECConfig.PSYCHIC_CREEPER_SPAWN));
+				monsters.add(new SpawnListEntry(MobCookieCreeper.class, ECConfig.COOKIE_CREEPER_SPAWN));
+
+				monsters.add(new SpawnListEntry(MobGhostCreeper.class, 12));
+			} catch (UnsupportedOperationException locked) {
+				--allBiomes;
+				++lockedBiomes;
 			}
-
-			monsters.add(new SpawnListEntry(MobWaterCreeper.class, ECConfig.WATER_CREEPER_SPAWN));
-			monsters.add(new SpawnListEntry(MobFireCreeper.class, ECConfig.FIRE_CREEPER_SPAWN));
-			monsters.add(new SpawnListEntry(MobIceCreeper.class, ECConfig.ICE_CREEPER_SPAWN));
-			monsters.add(new SpawnListEntry(MobElectricCreeper.class, ECConfig.ELECTRIC_CREEPER_SPAWN));
-			monsters.add(new SpawnListEntry(MobEarthCreeper.class, ECConfig.EARTH_CREEPER_SPAWN));
-			monsters.add(new SpawnListEntry(MobPsychicCreeper.class, ECConfig.PSYCHIC_CREEPER_SPAWN));
-			monsters.add(new SpawnListEntry(MobCookieCreeper.class, ECConfig.COOKIE_CREEPER_SPAWN));
-
-			monsters.add(new SpawnListEntry(MobGhostCreeper.class, 12));
 		}
 
 		ElementalCreepers.LOGGER.info(
@@ -88,6 +94,10 @@ public final class ECEntities {
 			allBiomes, netherKeys.size());
 
 		ElementalCreepers.LOGGER.info("Magma creeper nether biomes: {}", String.join(", ", netherKeys));
+		if (lockedBiomes > 0) {
+			ElementalCreepers.LOGGER.info("{} biome(s) do not allow their spawn list to be added to, so no "
+				+ "creepers were put in them. Nothing else is affected.", lockedBiomes);
+		}
 		if (peacefulBiomes > 0) {
 			ElementalCreepers.LOGGER.info(
 				"Left {} biome(s) alone: their monster list was already empty, which is another mod's "
